@@ -1,0 +1,12 @@
+{
+  "name": "jpm-backend",
+  "version": "1.0.0",
+  "description": "Backend da JPM Mobile",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

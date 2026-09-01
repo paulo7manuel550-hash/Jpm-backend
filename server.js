@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const users = [];
 const posts = [];
 const likes = [];
+const comments = [];
 
 function sendJSON(res, statusCode, data) {
   res.writeHead(statusCode, {

@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3000;
 
 const users = [];
 const posts = [];
+const likes = [];
 
 function sendJSON(res, statusCode, data) {
   res.writeHead(statusCode, {
@@ -219,7 +220,70 @@ const server = http.createServer((req, res) => {
       posts: [...posts].reverse()
     });
   }
+// CURTIR PUBLICAÇÃO
+if (req.method === "POST" && req.url.startsWith("/api/posts/") && req.url.endsWith("/like")) {
+  const parts = req.url.split("/");
+  const postId = Number(parts[3]);
 
+  return readBody(req, (error, data) => {
+
+    if (error) {
+      return sendJSON(res, 400, {
+        success: false,
+        message: "Dados inválidos."
+      });
+    }
+
+    const userId = Number(data.userId);
+
+    const post = posts.find(post => post.id === postId);
+    const user = users.find(user => user.id === userId);
+
+    if (!post) {
+      return sendJSON(res, 404, {
+        success: false,
+        message: "Publicação não encontrada."
+      });
+    }
+
+    if (!user) {
+      return sendJSON(res, 404, {
+        success: false,
+        message: "Utilizador não encontrado."
+      });
+    }
+
+    const existingLike = likes.find(
+      like => like.postId === postId && like.userId === userId
+    );
+
+    if (existingLike) {
+      likes.splice(likes.indexOf(existingLike), 1);
+      post.likes = Math.max(0, post.likes - 1);
+
+      return sendJSON(res, 200, {
+        success: true,
+        liked: false,
+        likes: post.likes,
+        message: "Curtida removida."
+      });
+    }
+
+    likes.push({
+      postId,
+      userId
+    });
+
+    post.likes += 1;
+
+    return sendJSON(res, 200, {
+      success: true,
+      liked: true,
+      likes: post.likes,
+      message: "Publicação curtida!"
+    });
+  });
+}
   // ROTA NÃO ENCONTRADA
   return sendJSON(res, 404, {
     success: false,

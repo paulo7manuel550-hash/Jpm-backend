@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>JPM Mobile</title>
 
   <style>
@@ -18,28 +17,30 @@
       font-family: Arial, sans-serif;
       background: #f4f6f8;
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
     }
 
     .app {
       width: 100%;
       max-width: 430px;
       min-height: 100vh;
-      margin: auto;
       background: white;
-      padding: 25px 20px;
+      padding: 30px 22px;
     }
 
     .logo {
       text-align: center;
-      font-size: 42px;
+      font-size: 48px;
       font-weight: bold;
-      margin-top: 20px;
+      margin-top: 40px;
+      margin-bottom: 8px;
     }
 
     .subtitle {
       text-align: center;
       color: #666;
-      margin: 5px 0 30px;
+      margin-bottom: 40px;
     }
 
     h1 {
@@ -49,24 +50,17 @@
 
     .description {
       color: #666;
-      line-height: 1.5;
       margin-bottom: 25px;
+      line-height: 1.5;
     }
 
-    input,
-    textarea {
+    input {
       width: 100%;
       padding: 15px;
-      margin-bottom: 13px;
+      margin-bottom: 14px;
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: #111;
     }
 
     button {
@@ -80,59 +74,85 @@
       margin-top: 5px;
     }
 
-    .black {
+    .primary {
       background: #111;
       color: white;
     }
 
-    .gray {
-      background: #eee;
+    .secondary {
+      background: white;
       color: #111;
-    }
-
-    .danger {
-      background: #e53935;
-      color: white;
+      border: 1px solid #ddd;
+      margin-top: 12px;
     }
 
     .status {
       text-align: center;
-      margin: 15px 0;
-      min-height: 20px;
+      margin-top: 20px;
       font-size: 14px;
+      color: #555;
+      min-height: 20px;
     }
 
     .hidden {
       display: none;
     }
 
-    .topbar {
+    .home {
+      padding-top: 20px;
+    }
+
+    .home-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
     }
 
-    .topbar strong {
-      font-size: 24px;
+    .home-logo {
+      font-size: 28px;
+      font-weight: bold;
     }
 
     .logout {
       width: auto;
       padding: 9px 14px;
       margin: 0;
-      font-size: 13px;
+      background: #f1f1f1;
+      color: #111;
     }
 
-    .card {
+    .welcome {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .post-box {
+      margin-top: 25px;
+      padding: 18px;
+      border: 1px solid #ddd;
+      border-radius: 14px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      resize: vertical;
+    }
+
+    .post {
+      margin-top: 20px;
+      padding: 18px;
       border: 1px solid #eee;
       border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 15px;
-      background: #fff;
+      background: #fafafa;
     }
 
-    .author {
+    .post-author {
       font-weight: bold;
       margin-bottom: 8px;
     }
@@ -140,33 +160,12 @@
     .post-content {
       color: #333;
       line-height: 1.5;
-      margin-bottom: 10px;
     }
 
-    .date {
-      color: #999;
+    .post-date {
+      color: #888;
       font-size: 12px;
-    }
-
-    .section-title {
-      font-size: 20px;
-      margin: 25px 0 15px;
-    }
-
-    .switch {
-      text-align: center;
-      margin-top: 18px;
-      color: #666;
-      font-size: 14px;
-    }
-
-    .switch button {
-      width: auto;
-      background: none;
-      color: #111;
-      padding: 5px;
-      margin: 0;
-      text-decoration: underline;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -175,62 +174,17 @@
 
   <main class="app">
 
-    <!-- CADASTRO -->
-    <section id="registerScreen">
+    <!-- LOGIN -->
+    <section id="loginScreen">
 
       <div class="logo">JPM</div>
 
       <p class="subtitle">Conectando pessoas</p>
 
-      <h1>Cria a tua conta</h1>
+      <h1>Entra na tua conta</h1>
 
       <p class="description">
-        Entra na JPM e começa a fazer parte da nossa comunidade.
-      </p>
-
-      <input
-        type="text"
-        id="registerName"
-        placeholder="Nome completo"
-      >
-
-      <input
-        type="tel"
-        id="registerPhone"
-        placeholder="Número de telefone"
-      >
-
-      <input
-        type="password"
-        id="registerPassword"
-        placeholder="Palavra-passe"
-      >
-
-      <button class="black" onclick="registerUser()">
-        Criar conta
-      </button>
-
-      <div class="status" id="registerStatus"></div>
-
-      <div class="switch">
-        Já tens uma conta?
-        <button onclick="showLogin()">Entrar</button>
-      </div>
-
-    </section>
-
-
-    <!-- LOGIN -->
-    <section id="loginScreen" class="hidden">
-
-      <div class="logo">JPM</div>
-
-      <p class="subtitle">Bem-vindo de volta</p>
-
-      <h1>Entrar na JPM</h1>
-
-      <p class="description">
-        Entra na tua conta para continuar.
+        Bem-vindo de volta à comunidade JPM.
       </p>
 
       <input
@@ -245,58 +199,102 @@
         placeholder="Palavra-passe"
       >
 
-      <button class="black" onclick="loginUser()">
+      <button class="primary" onclick="loginUser()">
         Entrar
+      </button>
+
+      <button class="secondary" onclick="showRegister()">
+        Criar nova conta
       </button>
 
       <div class="status" id="loginStatus"></div>
 
-      <div class="switch">
-        Ainda não tens conta?
-        <button onclick="showRegister()">Criar conta</button>
-      </div>
+    </section>
+
+
+    <!-- REGISTRO -->
+    <section id="registerScreen" class="hidden">
+
+      <div class="logo">JPM</div>
+
+      <p class="subtitle">Conectando pessoas</p>
+
+      <h1>Cria a tua conta</h1>
+
+      <p class="description">
+        Entra na JPM e começa a fazer parte da nossa comunidade.
+      </p>
+
+      <input
+        type="text"
+        id="name"
+        placeholder="Nome completo"
+      >
+
+      <input
+        type="tel"
+        id="phone"
+        placeholder="Número de telefone"
+      >
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Palavra-passe"
+      >
+
+      <button class="primary" onclick="registerUser()">
+        Criar conta
+      </button>
+
+      <button class="secondary" onclick="showLogin()">
+        Já tenho uma conta
+      </button>
+
+      <div class="status" id="registerStatus"></div>
 
     </section>
 
 
-    <!-- FEED -->
-    <section id="feedScreen" class="hidden">
+    <!-- PÁGINA INICIAL -->
+    <section id="homeScreen" class="hidden home">
 
-      <div class="topbar">
-        <strong>JPM</strong>
+      <div class="home-header">
+        <div class="home-logo">JPM</div>
 
-        <button
-          class="danger logout"
-          onclick="logout()">
+        <button class="logout" onclick="logout()">
           Sair
         </button>
       </div>
 
-      <p id="welcome"></p>
+      <h1 class="welcome">
+        Olá, <span id="userName"></span>! 👋
+      </h1>
 
-      <h2 class="section-title">
-        O que estás a pensar?
-      </h2>
+      <p class="description">
+        Bem-vindo à JPM Mobile.
+      </p>
 
-      <textarea
-        id="postContent"
-        rows="4"
-        placeholder="Partilha alguma coisa com a comunidade..."
-      ></textarea>
+      <div class="post-box">
 
-      <button class="black" onclick="createPost()">
-        Publicar
-      </button>
+        <h2>O que estás a pensar?</h2>
 
-      <div class="status" id="postStatus"></div>
+        <br>
 
-      <h2 class="section-title">
-        Publicações
-      </h2>
+        <textarea
+          id="postContent"
+          placeholder="Partilha alguma coisa com a comunidade..."
+        ></textarea>
 
-      <div id="postsContainer">
-        A carregar publicações...
+        <button class="primary" onclick="createPost()">
+          Publicar
+        </button>
+
+        <div class="status" id="postStatus"></div>
+
       </div>
+
+      <div id="postsContainer"></div>
 
     </section>
 
@@ -310,81 +308,42 @@
     let currentUser = null;
 
 
-    // =========================
-    // TROCAR PARA LOGIN
-    // =========================
-
+    // MOSTRAR LOGIN
     function showLogin() {
-
-      document
-        .getElementById("registerScreen")
-        .classList.add("hidden");
-
-      document
-        .getElementById("loginScreen")
-        .classList.remove("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
+      document.getElementById("registerScreen").classList.add("hidden");
+      document.getElementById("homeScreen").classList.add("hidden");
     }
 
 
-    // =========================
-    // TROCAR PARA CADASTRO
-    // =========================
-
+    // MOSTRAR REGISTRO
     function showRegister() {
-
-      document
-        .getElementById("loginScreen")
-        .classList.add("hidden");
-
-      document
-        .getElementById("registerScreen")
-        .classList.remove("hidden");
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("registerScreen").classList.remove("hidden");
+      document.getElementById("homeScreen").classList.add("hidden");
     }
 
 
-    // =========================
-    // CRIAR CONTA
-    // =========================
-
+    // REGISTRAR UTILIZADOR
     async function registerUser() {
 
-      const name =
-        document.getElementById("registerName")
-        .value.trim();
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value;
 
-      const phone =
-        document.getElementById("registerPhone")
-        .value.trim();
-
-      const password =
-        document.getElementById("registerPassword")
-        .value;
-
-      const status =
-        document.getElementById("registerStatus");
-
+      const status = document.getElementById("registerStatus");
 
       if (!name || !phone || !password) {
-
-        status.textContent =
-          "Preenche todos os campos.";
-
+        status.textContent = "Preenche todos os campos.";
         return;
       }
-
 
       if (password.length < 6) {
-
-        status.textContent =
-          "A palavra-passe deve ter pelo menos 6 caracteres.";
-
+        status.textContent = "A palavra-passe deve ter pelo menos 6 caracteres.";
         return;
       }
 
-
-      status.textContent =
-        "A criar a tua conta...";
-
+      status.textContent = "A criar a conta...";
 
       try {
 
@@ -392,11 +351,9 @@
           `${API_URL}/api/register`,
           {
             method: "POST",
-
             headers: {
               "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
               name,
               phone,
@@ -405,82 +362,49 @@
           }
         );
 
-
-        const data =
-          await response.json();
-
+        const data = await response.json();
 
         if (data.success) {
 
-          status.textContent =
-            "Conta criada com sucesso! 🎉";
+          status.textContent = "Conta criada com sucesso! 🎉";
 
-          document.getElementById(
-            "registerName"
-          ).value = "";
-
-          document.getElementById(
-            "registerPhone"
-          ).value = "";
-
-          document.getElementById(
-            "registerPassword"
-          ).value = "";
+          document.getElementById("name").value = "";
+          document.getElementById("phone").value = "";
+          document.getElementById("password").value = "";
 
           setTimeout(() => {
-
             showLogin();
-
-          }, 1000);
+          }, 1200);
 
         } else {
 
-          status.textContent =
-            data.message ||
-            "Não foi possível criar a conta.";
-        }
+          status.textContent = data.message;
 
+        }
 
       } catch (error) {
 
-        console.error(error);
-
         status.textContent =
           "Não foi possível contactar o servidor.";
+
       }
     }
 
 
-    // =========================
     // LOGIN
-    // =========================
-
     async function loginUser() {
 
-      const phone =
-        document.getElementById("loginPhone")
-        .value.trim();
+      const phone = document.getElementById("loginPhone").value.trim();
+      const password = document.getElementById("loginPassword").value;
 
-      const password =
-        document.getElementById("loginPassword")
-        .value;
-
-      const status =
-        document.getElementById("loginStatus");
-
+      const status = document.getElementById("loginStatus");
 
       if (!phone || !password) {
-
-        status.textContent =
-          "Preenche o telefone e a palavra-passe.";
-
+        status.textContent = "Preenche o telefone e a palavra-passe.";
         return;
       }
 
-
-      status.textContent =
-        "A entrar...";
-
+      status.textContent = "A entrar...";
 
       try {
 
@@ -488,11 +412,9 @@
           `${API_URL}/api/login`,
           {
             method: "POST",
-
             headers: {
               "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
               phone,
               password
@@ -500,88 +422,61 @@
           }
         );
 
-
-        const data =
-          await response.json();
-
+        const data = await response.json();
 
         if (data.success) {
 
           currentUser = data.user;
 
-          localStorage.setItem(
-            "jpmUser",
-            JSON.stringify(data.user)
-          );
+          document.getElementById("userName").textContent =
+            currentUser.name;
 
-          document
-            .getElementById("loginScreen")
-            .classList.add("hidden");
+          document.getElementById("loginPhone").value = "";
+          document.getElementById("loginPassword").value = "";
 
-          document
-            .getElementById("feedScreen")
-            .classList.remove("hidden");
+          document.getElementById("loginScreen").classList.add("hidden");
+          document.getElementById("registerScreen").classList.add("hidden");
+          document.getElementById("homeScreen").classList.remove("hidden");
 
-
-          document.getElementById(
-            "welcome"
-          ).textContent =
-            `Olá, ${data.user.name}! 👋`;
-
+          status.textContent = "";
 
           loadPosts();
 
-
         } else {
 
-          status.textContent =
-            data.message ||
-            "Não foi possível entrar.";
-        }
+          status.textContent = data.message;
 
+        }
 
       } catch (error) {
 
-        console.error(error);
-
         status.textContent =
           "Não foi possível contactar o servidor.";
+
       }
     }
 
 
-    // =========================
     // CRIAR PUBLICAÇÃO
-    // =========================
-
     async function createPost() {
 
-      if (!currentUser) {
-
-        return;
-      }
-
-
       const content =
-        document.getElementById("postContent")
-        .value.trim();
+        document.getElementById("postContent").value.trim();
 
       const status =
         document.getElementById("postStatus");
 
-
-      if (!content) {
-
-        status.textContent =
-          "Escreve alguma coisa antes de publicar.";
-
+      if (!currentUser) {
+        status.textContent = "Faz login primeiro.";
         return;
       }
 
+      if (!content) {
+        status.textContent = "Escreve alguma coisa antes de publicar.";
+        return;
+      }
 
-      status.textContent =
-        "A publicar...";
-
+      status.textContent = "A publicar...";
 
       try {
 
@@ -589,11 +484,9 @@
           `${API_URL}/api/posts`,
           {
             method: "POST",
-
             headers: {
               "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
               userId: currentUser.id,
               content
@@ -601,49 +494,33 @@
           }
         );
 
-
-        const data =
-          await response.json();
-
+        const data = await response.json();
 
         if (data.success) {
 
-          document.getElementById(
-            "postContent"
-          ).value = "";
+          document.getElementById("postContent").value = "";
 
-          status.textContent =
-            "Publicação criada! 🎉";
+          status.textContent = "Publicação criada! 🎉";
 
           loadPosts();
 
         } else {
 
-          status.textContent =
-            data.message ||
-            "Erro ao publicar.";
-        }
+          status.textContent = data.message;
 
+        }
 
       } catch (error) {
 
-        console.error(error);
-
         status.textContent =
           "Não foi possível publicar.";
+
       }
     }
 
 
-    // =========================
     // CARREGAR PUBLICAÇÕES
-    // =========================
-
     async function loadPosts() {
-
-      const container =
-        document.getElementById("postsContainer");
-
 
       try {
 
@@ -651,39 +528,29 @@
           `${API_URL}/api/posts`
         );
 
+        const data = await response.json();
 
-        const data =
-          await response.json();
+        const container =
+          document.getElementById("postsContainer");
 
+        container.innerHTML = "";
 
-        if (!data.success ||
-            data.posts.length === 0) {
+        if (!data.posts || data.posts.length === 0) {
 
           container.innerHTML =
-            "<p>Nenhuma publicação ainda. Sê o primeiro! 🚀</p>";
+            "<p style='text-align:center;margin-top:30px;color:#777;'>Ainda não existem publicações.</p>";
 
           return;
         }
 
-
-        container.innerHTML = "";
-
-
         data.posts.forEach(post => {
 
-          const card =
-            document.createElement("div");
+          const article = document.createElement("article");
 
-          card.className = "card";
+          article.className = "post";
 
-
-          const date =
-            new Date(post.createdAt)
-              .toLocaleString("pt-PT");
-
-
-          card.innerHTML = `
-            <div class="author">
+          article.innerHTML = `
+            <div class="post-author">
               ${escapeHTML(post.author)}
             </div>
 
@@ -691,35 +558,27 @@
               ${escapeHTML(post.content)}
             </div>
 
-            <div class="date">
-              ${date}
+            <div class="post-date">
+              ${new Date(post.createdAt).toLocaleString("pt-PT")}
             </div>
           `;
 
-
-          container.appendChild(card);
+          container.appendChild(article);
 
         });
 
-
       } catch (error) {
 
-        console.error(error);
+        console.log("Erro ao carregar publicações.");
 
-        container.innerHTML =
-          "<p>Não foi possível carregar as publicações.</p>";
       }
     }
 
 
-    // =========================
-    // PROTEÇÃO DO TEXTO
-    // =========================
-
+    // PROTEÇÃO CONTRA HTML INJETADO
     function escapeHTML(text) {
 
-      const div =
-        document.createElement("div");
+      const div = document.createElement("div");
 
       div.textContent = text;
 
@@ -727,70 +586,19 @@
     }
 
 
-    // =========================
     // SAIR
-    // =========================
-
     function logout() {
 
       currentUser = null;
 
-      localStorage.removeItem("jpmUser");
+      document.getElementById("homeScreen").classList.add("hidden");
 
-      document
-        .getElementById("feedScreen")
-        .classList.add("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
 
-      showLogin();
+      document.getElementById("loginStatus").textContent =
+        "Sessão terminada.";
+
     }
-
-
-    // =========================
-    // RECUPERAR LOGIN
-    // =========================
-
-    window.onload = function() {
-
-      const savedUser =
-        localStorage.getItem("jpmUser");
-
-
-      if (savedUser) {
-
-        try {
-
-          currentUser =
-            JSON.parse(savedUser);
-
-
-          document
-            .getElementById("registerScreen")
-            .classList.add("hidden");
-
-          document
-            .getElementById("loginScreen")
-            .classList.add("hidden");
-
-          document
-            .getElementById("feedScreen")
-            .classList.remove("hidden");
-
-
-          document.getElementById(
-            "welcome"
-          ).textContent =
-            `Olá, ${currentUser.name}! 👋`;
-
-
-          loadPosts();
-
-
-        } catch (error) {
-
-          localStorage.removeItem("jpmUser");
-        }
-      }
-    };
 
   </script>
 

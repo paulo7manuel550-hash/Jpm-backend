@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JPM Mobile</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background: white;
+      padding: 30px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 35px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: #666;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .register {
+      background: #111;
+      color: white;
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+      min-height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <div class="logo">JPM</div>
+
+    <p class="subtitle">Conectando pessoas</p>
+
+    <h1>Cria a tua conta</h1>
+
+    <p class="description">
+      Entra na JPM e começa a fazer parte da nossa comunidade.
+    </p>
+
+    <input
+      type="text"
+      id="name"
+      placeholder="Nome completo"
+    >
+
+    <input
+      type="tel"
+      id="phone"
+      placeholder="Número de telefone"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Palavra-passe"
+    >
+
+    <button class="register" onclick="registerUser()">
+      Criar conta
+    </button>
+
+    <div class="status" id="status"></div>
+
+  </main>
+
+  <script>
+    const API_URL = "https://jpm-backend-1.onrender.com";
+
+    async function registerUser() {
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value;
+
+      const status = document.getElementById("status");
+
+      if (!name || !phone || !password) {
+        status.textContent = "Preenche todos os campos.";
+        return;
+      }
+
+      status.textContent = "A criar a conta...";
+
+      try {
+
+        const response = await fetch(
+          `${API_URL}/api/register`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              name,
+              phone,
+              password
+            })
+          }
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+          status.textContent = "Conta criada com sucesso! 🎉";
+        } else {
+          status.textContent = data.message;
+        }
+
+      } catch (error) {
+
+        status.textContent =
+          "Não foi possível contactar o servidor.";
+
+      }
+    }
+  </script>
+
+</body>
+</html>

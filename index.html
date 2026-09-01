@@ -599,7 +599,130 @@
         "Sessão terminada.";
 
     }
+/* ---------- SEGUIR UTILIZADORES ---------- */
 
+async function loadUsersToFollow() {
+
+  const container =
+    document.getElementById("usersToFollow");
+
+  container.innerHTML =
+    "A carregar utilizadores...";
+
+  try {
+
+    const response =
+      await fetch(`${API_URL}/api/users`);
+
+    const data =
+      await response.json();
+
+    if (!data.users || data.users.length === 0) {
+
+      container.innerHTML =
+        "Ainda não existem utilizadores.";
+
+      return;
+    }
+
+    const otherUsers =
+      data.users.filter(
+        user => user.id !== currentUser.id
+      );
+
+    if (otherUsers.length === 0) {
+
+      container.innerHTML =
+        "Ainda não existem outros utilizadores para seguir.";
+
+      return;
+    }
+
+    container.innerHTML =
+      otherUsers.map(user => `
+
+        <div class="user-follow">
+
+          <strong>
+            ${escapeHTML(user.name)}
+          </strong>
+
+          <button
+            onclick="toggleFollow(${user.id}, this)"
+          >
+            👤 Seguir
+          </button>
+
+        </div>
+
+      `).join("");
+
+  } catch (error) {
+
+    console.log(
+      "Erro ao carregar utilizadores:",
+      error
+    );
+
+    container.innerHTML =
+      "Erro ao carregar utilizadores.";
+  }
+}
+
+
+async function toggleFollow(userId, button) {
+
+  if (!currentUser) {
+    alert("Entre na sua conta primeiro.");
+    return;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_URL}/api/users/${userId}/follow`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: currentUser.id
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!data.success) {
+
+      alert(
+        data.message ||
+        "Não foi possível realizar a ação."
+      );
+
+      return;
+    }
+
+    button.textContent =
+      data.following
+        ? "✓ A seguir"
+        : "👤 Seguir";
+
+  } catch (error) {
+
+    console.log(
+      "Erro ao seguir utilizador:",
+      error
+    );
+
+    alert(
+      "Erro de conexão com o servidor."
+    );
+  }
+}
   </script>
 
 </body>

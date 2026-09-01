@@ -285,6 +285,81 @@ if (req.method === "POST" && req.url.startsWith("/api/posts/") && req.url.endsWi
     });
   });
 }
+  // CRIAR COMENTÁRIO
+if (req.method === "POST" && req.url === "/api/comments") {
+  return readBody(req, (error, data) => {
+
+    if (error) {
+      return sendJSON(res, 400, {
+        success: false,
+        message: "Dados inválidos."
+      });
+    }
+
+    const postId = Number(data.postId);
+    const userId = Number(data.userId);
+    const content = String(data.content || "").trim();
+
+    const post = posts.find(post => post.id === postId);
+    const user = users.find(user => user.id === userId);
+
+    if (!post) {
+      return sendJSON(res, 404, {
+        success: false,
+        message: "Publicação não encontrada."
+      });
+    }
+
+    if (!user) {
+      return sendJSON(res, 404, {
+        success: false,
+        message: "Utilizador não encontrado."
+      });
+    }
+
+    if (!content) {
+      return sendJSON(res, 400, {
+        success: false,
+        message: "O comentário não pode estar vazio."
+      });
+    }
+
+    const comment = {
+      id: comments.length + 1,
+      postId,
+      userId,
+      author: user.name,
+      content,
+      createdAt: new Date().toISOString()
+    };
+
+    comments.push(comment);
+
+    return sendJSON(res, 201, {
+      success: true,
+      message: "Comentário publicado!",
+      comment
+    });
+  });
+}
+
+
+// LISTAR COMENTÁRIOS
+if (req.method === "GET" && req.url.startsWith("/api/comments/")) {
+
+  const postId = Number(
+    req.url.split("/")[3]
+  );
+
+  const postComments = comments.filter(
+    comment => comment.postId === postId
+  );
+
+  return sendJSON(res, 200, {
+    success: true,
+    comments: postComments
+  });
+}
   // ROTA NÃO ENCONTRADA
   return sendJSON(res, 404, {
     success: false,

@@ -153,18 +153,35 @@ const server = http.createServer((req, res) => {
       });
     });
   }
+  
+// LISTAR UTILIZADORES
+if (req.method === "GET" && req.url === "/api/users") {
 
-  // LISTAR UTILIZADORES
-  if (req.method === "GET" && req.url === "/api/users") {
-    return sendJSON(res, 200, {
-      success: true,
-      users: users.map(user => ({
+  return sendJSON(res, 200, {
+    success: true,
+
+    users: users.map(user => {
+
+      const followersCount = follows.filter(
+        follow => follow.followingId === user.id
+      ).length;
+
+      const followingCount = follows.filter(
+        follow => follow.followerId === user.id
+      ).length;
+
+      return {
         id: user.id,
         name: user.name,
-        phone: user.phone
-      }))
-    });
-  }
+        phone: user.phone,
+        followersCount: followersCount,
+        followingCount: followingCount
+      };
+
+    })
+  });
+
+}
 
   // CRIAR PUBLICAÇÃO
   if (req.method === "POST" && req.url === "/api/posts") {

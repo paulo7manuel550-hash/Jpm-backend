@@ -259,13 +259,27 @@
     <!-- PÁGINA INICIAL -->
     <section id="homeScreen" class="hidden home">
 
-      <div class="home-header">
-        <div class="home-logo">JPM</div>
+    <div class="home-header">
+  <div class="home-logo">JPM</div>
 
-        <button class="logout" onclick="logout()">
-          Sair
-        </button>
-      </div>
+  <div style="display:flex;gap:8px;">
+
+    <button
+      class="logout"
+      onclick="showProfile()"
+    >
+      👤 Perfil
+    </button>
+
+    <button
+      class="logout"
+      onclick="logout()"
+    >
+      Sair
+    </button>
+
+  </div>
+</div>
 
       <h1 class="welcome">
         Olá, <span id="userName"></span>! 👋
@@ -584,7 +598,27 @@
 
       return div.innerHTML;
     }
+// MOSTRAR PERFIL
+function showProfile() {
 
+  if (!currentUser) {
+    alert("Entra na tua conta primeiro.");
+    return;
+  }
+
+  document.getElementById("homeScreen")
+    .classList.add("hidden");
+
+  document.getElementById("profilePage")
+    .classList.remove("hidden");
+
+  document.getElementById("profileName")
+    .textContent = currentUser.name;
+
+  document.getElementById("profilePhone")
+    .textContent = currentUser.phone;
+
+}
 
     // SAIR
     function logout() {

@@ -378,7 +378,7 @@ if (req.method === "GET" && req.url.startsWith("/api/comments/")) {
     comments: postComments
   });
 }
-  // SEGUIR / DEIXAR DE SEGUIR UTILIZADOR
+// SEGUIR / DEIXAR DE SEGUIR UTILIZADOR
 if (
   req.method === "POST" &&
   req.url.startsWith("/api/users/") &&
@@ -399,8 +399,13 @@ if (
 
     const userId = Number(data.userId);
 
-    const user = users.find(user => user.id === userId);
-    const targetUser = users.find(user => user.id === targetUserId);
+    const user = users.find(
+      user => user.id === userId
+    );
+
+    const targetUser = users.find(
+      user => user.id === targetUserId
+    );
 
     if (!user || !targetUser) {
       return sendJSON(res, 404, {
@@ -422,6 +427,7 @@ if (
         follow.followingId === targetUserId
     );
 
+    // DEIXAR DE SEGUIR
     if (existingFollow) {
 
       follows.splice(
@@ -436,6 +442,7 @@ if (
       });
     }
 
+    // SEGUIR
     follows.push({
       followerId: userId,
       followingId: targetUserId
@@ -446,6 +453,7 @@ if (
       following: true,
       message: "Agora estás a seguir este utilizador!"
     });
+
   });
 }
   // ROTA NÃO ENCONTRADA

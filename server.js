@@ -155,13 +155,15 @@ const server = http.createServer((req, res) => {
   }
   
 // LISTAR UTILIZADORES
-if (req.method === "GET" && req.url === "/api/users") {
+if (req.method === "GET" && req.url.startsWith("/api/users")) {
 
   return sendJSON(res, 200, {
     success: true,
 
     users: users.map(user => {
-
+const userId = Number(
+  new URL(req.url, "http://localhost").searchParams.get("userId")
+);
       const followersCount = follows.filter(
         follow => follow.followingId === user.id
       ).length;
@@ -169,14 +171,19 @@ if (req.method === "GET" && req.url === "/api/users") {
       const followingCount = follows.filter(
         follow => follow.followerId === user.id
       ).length;
-
-      return {
-        id: user.id,
-        name: user.name,
-        phone: user.phone,
-        followersCount: followersCount,
-        followingCount: followingCount
-      };
+const following = follows.some(
+  follow =>
+    follow.followerId === userId &&
+    follow.followingId === user.id
+);
+return {
+  id: user.id,
+  name: user.name,
+  phone: user.phone,
+  followersCount: followersCount,
+  followingCount: followingCount,
+  following: following
+};
 
     })
   });

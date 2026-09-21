@@ -238,14 +238,34 @@ return {
       });
     });
   }
+// LISTAR PUBLICAÇÕES
+if (req.method === "GET" && req.url.startsWith("/api/posts")) {
 
-  // LISTAR PUBLICAÇÕES
-  if (req.method === "GET" && req.url === "/api/posts") {
-    return sendJSON(res, 200, {
-      success: true,
-      posts: [...posts].reverse()
-    });
-  }
+  const userId = Number(
+    new URL(req.url, "http://localhost").searchParams.get("userId")
+  );
+
+  return sendJSON(res, 200, {
+    success: true,
+
+    posts: [...posts].reverse().map(post => {
+
+      const liked = likes.some(
+        like =>
+          like.postId === post.id &&
+          like.userId === userId
+      );
+
+      return {
+        ...post,
+        liked: liked
+      };
+
+    })
+  });
+
+}
+  
 // CURTIR PUBLICAÇÃO
 if (req.method === "POST" && req.url.startsWith("/api/posts/") && req.url.endsWith("/like")) {
   const parts = req.url.split("/");

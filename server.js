@@ -388,7 +388,93 @@ if (req.method === "POST" && req.url === "/api/comments") {
     });
   });
 }
+  
+// CURTIR COMENTÁRIO
+if (
+  req.method === "POST" &&
+  req.url.startsWith("/api/comments/") &&
+  req.url.endsWith("/like")
+) {
 
+  const parts = req.url.split("/");
+  const commentId = Number(parts[3]);
+
+  return readBody(req, (error, data) => {
+
+    if (error) {
+      return sendJSON(res, 400, {
+        success: false,
+        message: "Dados inválidos."
+      });
+    }
+
+    const userId = Number(data.userId);
+
+    const comment = comments.find(
+      comment => comment.id === commentId
+    );
+
+    const user = users.find(
+      user => user.id === userId
+    );
+
+    if (!comment) {
+      return sendJSON(res, 404, {
+        success: false,
+        message: "Comentário não encontrado."
+      });
+    }
+
+    if (!user) {
+      return sendJSON(res, 404, {
+        success: false,
+        message: "Utilizador não encontrado."
+      });
+    }
+
+    const existingLike = commentLikes.find(
+      like =>
+        like.commentId === commentId &&
+        like.userId === userId
+    );
+
+    if (existingLike) {
+
+      commentLikes.splice(
+        commentLikes.indexOf(existingLike),
+        1
+      );
+
+      const likesCount = commentLikes.filter(
+        like => like.commentId === commentId
+      ).length;
+
+      return sendJSON(res, 200, {
+        success: true,
+        liked: false,
+        likes: likesCount,
+        message: "Curtida do comentário removida."
+      });
+    }
+
+    commentLikes.push({
+      commentId,
+      userId
+    });
+
+    const likesCount = commentLikes.filter(
+      like => like.commentId === commentId
+    ).length;
+
+    return sendJSON(res, 200, {
+      success: true,
+      liked: true,
+      likes: likesCount,
+      message: "Comentário curtido!"
+    });
+
+  });
+}
 
 // LISTAR COMENTÁRIOS
 if (req.method === "GET" && req.url.startsWith("/api/comments/")) {

@@ -479,13 +479,40 @@ if (
 // LISTAR COMENTÁRIOS
 if (req.method === "GET" && req.url.startsWith("/api/comments/")) {
 
-  const postId = Number(
-    req.url.split("/")[3]
+  const url = new URL(
+    req.url,
+    "http://localhost"
   );
 
-  const postComments = comments.filter(
-    comment => comment.postId === postId
+  const postId = Number(
+    url.pathname.split("/")[3]
   );
+
+  const userId = Number(
+    url.searchParams.get("userId")
+  );
+
+  const postComments = comments
+    .filter(comment => comment.postId === postId)
+    .map(comment => {
+
+      const likesCount = commentLikes.filter(
+        like => like.commentId === comment.id
+      ).length;
+
+      const liked = commentLikes.some(
+        like =>
+          like.commentId === comment.id &&
+          like.userId === userId
+      );
+
+      return {
+        ...comment,
+        likes: likesCount,
+        liked: liked
+      };
+
+    });
 
   return sendJSON(res, 200, {
     success: true,

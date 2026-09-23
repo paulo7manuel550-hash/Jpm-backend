@@ -589,7 +589,15 @@ if (
       followerId: userId,
       followingId: targetUserId
     });
-
+notifications.push({
+  id: notifications.length + 1,
+  userId: targetUserId,
+  fromUserId: userId,
+  type: "follow",
+  message: `${user.name} começou a seguir-te.`,
+  read: false,
+  createdAt: new Date().toISOString()
+});
     return sendJSON(res, 200, {
       success: true,
       following: true,

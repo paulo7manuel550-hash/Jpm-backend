@@ -633,6 +633,43 @@ if (
     notifications: userNotifications
   });
 }
+  // PESQUISAR UTILIZADORES
+if (
+  req.method === "GET" &&
+  req.url.startsWith("/api/users/search")
+) {
+
+  const url = new URL(
+    req.url,
+    "http://localhost"
+  );
+
+  const query = String(
+    url.searchParams.get("q") || ""
+  ).trim().toLowerCase();
+
+  if (!query) {
+    return sendJSON(res, 200, {
+      success: true,
+      users: []
+    });
+  }
+
+  const results = users
+    .filter(user =>
+      user.name.toLowerCase().includes(query)
+    )
+    .map(user => ({
+      id: user.id,
+      name: user.name,
+      phone: user.phone
+    }));
+
+  return sendJSON(res, 200, {
+    success: true,
+    users: results
+  });
+}
   // ROTA NÃO ENCONTRADA
   return sendJSON(res, 404, {
     success: false,

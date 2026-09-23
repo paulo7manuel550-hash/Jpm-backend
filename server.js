@@ -606,6 +606,33 @@ notifications.push({
 
   });
 }
+  // LISTAR NOTIFICAÇÕES
+if (
+  req.method === "GET" &&
+  req.url.startsWith("/api/notifications")
+) {
+
+  const url = new URL(
+    req.url,
+    "http://localhost"
+  );
+
+  const userId = Number(
+    url.searchParams.get("userId")
+  );
+
+  const userNotifications = notifications
+    .filter(
+      notification =>
+        notification.userId === userId
+    )
+    .reverse();
+
+  return sendJSON(res, 200, {
+    success: true,
+    notifications: userNotifications
+  });
+}
   // ROTA NÃO ENCONTRADA
   return sendJSON(res, 404, {
     success: false,

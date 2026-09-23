@@ -9,6 +9,7 @@ const likes = [];
 const commentLikes = [];
 const comments = [];
 const follows = [];
+const notifications = [];
 
 function sendJSON(res, statusCode, data) {
   res.writeHead(statusCode, {

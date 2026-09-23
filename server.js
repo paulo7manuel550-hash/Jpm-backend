@@ -157,7 +157,11 @@ const server = http.createServer((req, res) => {
   }
   
 // LISTAR UTILIZADORES
-if (req.method === "GET" && req.url.startsWith("/api/users")) {
+if (
+  req.method === "GET" &&
+  req.url.startsWith("/api/users") &&
+  !req.url.startsWith("/api/users/search")
+) {
 
   return sendJSON(res, 200, {
     success: true,

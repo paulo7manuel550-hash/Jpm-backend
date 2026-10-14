@@ -322,11 +322,24 @@ if (req.method === "POST" && req.url.startsWith("/api/posts/") && req.url.endsWi
     }
 
     likes.push({
-      postId,
-      userId
-    });
+  postId,
+  userId
+});
 
-    post.likes += 1;
+post.likes += 1;
+
+// CRIAR NOTIFICAÇÃO DE CURTIDA
+if (post.userId !== userId) {
+  notifications.push({
+    id: notifications.length + 1,
+    userId: post.userId,
+    fromUserId: userId,
+    type: "like",
+    message: `${user.name} gostou da tua publicação.`,
+    read: false,
+    createdAt: new Date().toISOString()
+  });
+}
 
     return sendJSON(res, 200, {
       success: true,

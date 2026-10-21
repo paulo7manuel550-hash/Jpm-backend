@@ -398,7 +398,19 @@ if (req.method === "POST" && req.url === "/api/comments") {
     };
 
     comments.push(comment);
-
+    
+// CRIAR NOTIFICAÇÃO DE COMENTÁRIO
+if (post.userId !== userId) {
+  notifications.push({
+    id: notifications.length + 1,
+    userId: post.userId,
+    fromUserId: userId,
+    type: "comment",
+    message: `${user.name} comentou a tua publicação.`,
+    read: false,
+    createdAt: new Date().toISOString()
+  });
+}
     return sendJSON(res, 201, {
       success: true,
       message: "Comentário publicado!",

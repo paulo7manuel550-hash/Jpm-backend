@@ -488,13 +488,26 @@ if (
     }
 
     commentLikes.push({
-      commentId,
-      userId
-    });
+  commentId,
+  userId
+});
 
-    const likesCount = commentLikes.filter(
-      like => like.commentId === commentId
-    ).length;
+// CRIAR NOTIFICAÇÃO DE CURTIDA NO COMENTÁRIO
+if (comment.userId !== userId) {
+  notifications.push({
+    id: notifications.length + 1,
+    userId: comment.userId,
+    fromUserId: userId,
+    type: "comment_like",
+    message: `${user.name} gostou do teu comentário.`,
+    read: false,
+    createdAt: new Date().toISOString()
+  });
+}
+
+const likesCount = commentLikes.filter(
+  like => like.commentId === commentId
+).length;
 
     return sendJSON(res, 200, {
       success: true,

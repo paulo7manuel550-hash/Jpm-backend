@@ -675,6 +675,33 @@ if (
     notifications: userNotifications
   });
 }
+  // MARCAR NOTIFICAÇÕES COMO LIDAS
+if (
+  req.method === "POST" &&
+  req.url === "/api/notifications/read"
+) {
+  return readBody(req, (error, data) => {
+    if (error) {
+      return sendJSON(res, 400, {
+        success: false,
+        message: "Dados inválidos."
+      });
+    }
+
+    const userId = Number(data.userId);
+
+    notifications.forEach(notification => {
+      if (notification.userId === userId) {
+        notification.read = true;
+      }
+    });
+
+    return sendJSON(res, 200, {
+      success: true,
+      message: "Notificações marcadas como lidas."
+    });
+  });
+}
   // PESQUISAR UTILIZADORES
 if (
   req.method === "GET" &&
